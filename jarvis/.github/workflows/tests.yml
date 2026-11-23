@@ -1,0 +1,53 @@
+name: tests
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Byte-compile every module
+        run: python -m compileall -q jarvis jarvis.py tests
+
+      - name: Unit tests (offline, no phone, no API key)
+        run: python -m unittest discover -s tests -v
+
+      - name: Offline self-test against the fake device
+        env:
+          JARVIS_MOCK: "1"
+          NO_COLOR: "1"
+        run: python jarvis.py --selftest
+
+      - name: Tool registry is complete
+        env:
+          JARVIS_MOCK: "1"
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0, ".")
+          from jarvis.tools import registry
+          import jarvis.tools.android      # noqa: F401
+          import jarvis.tools.system       # noqa: F401
+          import jarvis.tools.termux_api   # noqa: F401
+          import jarvis.tools.memory_tools # noqa: F401
+          import jarvis.tools.selfmod      # noqa: F401
+          n = len(registry.REGISTRY)
+          print(f"{n} tools registered")
+          assert n >= 80, f"expected the full tool set, got {n}"
+          PY

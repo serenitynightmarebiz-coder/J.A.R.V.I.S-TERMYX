@@ -1,0 +1,9 @@
+{
+  "name": "Jarvis (TERMUX)",
+  "templateId": "empty",
+  "agent": {
+    "profile": "light",
+    "planApproval": true,
+    "askUser": true
+  }
+}

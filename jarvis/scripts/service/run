@@ -1,0 +1,7 @@
+#!/data/data/com.termux/files/usr/bin/sh
+# runit service definition for the JARVIS background daemon.
+# Installed by scripts/service-setup.sh; supervised by termux-services.
+exec 2>&1
+cd "$HOME/jarvis" || exit 1
+termux-wake-lock 2>/dev/null
+exec python3 jarvis.py --serve

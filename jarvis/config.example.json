@@ -1,0 +1,32 @@
+{
+  "provider": {
+    "name": "ollama",
+    "model": "llama3.1",
+    "base_url": "",
+    "api_key": "",
+    "temperature": 0.5,
+    "max_tokens": 1024,
+    "tool_mode": "auto",
+    "timeout": 120
+  },
+  "user": "sir",
+  "address": "sir",
+  "voice": false,
+  "voice_output": true,
+  "voice_input": false,
+  "wake_word": "jarvis",
+  "max_steps": 12,
+  "confirm_danger": true,
+  "auto_approve": [],
+  "history_turns": 12,
+  "greeting": true,
+  "shell_timeout": 60,
+  "require_wake_word": true,
+  "awake_window": 25,
+  "allow_self_modify": true,
+  "self_modify_requires_confirm": true,
+  "service_port": 8765,
+  "api_token": "",
+  "animations": true,
+  "haptics": true
+}
